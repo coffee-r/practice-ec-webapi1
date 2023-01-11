@@ -41,8 +41,25 @@ class UserRepository implements UserRepositoryInterface
     }
     public function findByEmail(UserEmail $email)
     {
-        return null;
+        $modelUser = ModelsUser::where('email', $email->value)->first();
+
+        if($modelUser == null) {return null;}
+
+        return new User(
+            new UserId($modelUser->id),
+            new UserName($modelUser->name),
+            new UserNameFurigana($modelUser->name_furigana),
+            new UserGender($modelUser->gender),
+            new UserBirthday($modelUser->birthday_year, $modelUser->birthday_month),
+            new UserEmail($modelUser->email),
+            new UserPassword($modelUser->password),
+            new UserPostalCode($modelUser->postal_code),
+            new UserAddress($modelUser->address_prefectures, $modelUser->address_municipalities, $modelUser->address_others),
+            new UserTel($modelUser->tel),
+            new UserEmailMagazineSubscription($modelUser->email_magazine_subscription)
+        );
     }
+
     public function save(User $user)
     {
         $modelUser = ModelsUser::find($user->userId->value);

@@ -2,6 +2,7 @@
 
 namespace App\Packages\User\Usecase;
 
+use App\Packages\Shared\Usecase\UsecaseException;
 use App\Packages\User\Domain\User;
 use App\Packages\User\Domain\UserName;
 use App\Packages\User\Domain\UserAddress;
@@ -33,7 +34,6 @@ class UserRegisterAction
 
     public function __invoke(UserRegisterCommand $userRegisterCommand)
     {
-
         DB::transaction(function () use($userRegisterCommand) {
 
             $user = new User(
@@ -51,7 +51,7 @@ class UserRegisterAction
             );
     
             if ($this->userService->isExists($user)){
-                throw new Exception("このメールアドレスでは登録ができません");
+                throw new UsecaseException("このメールアドレスは既に使用されています");
             }
 
             $this->userRepository->save($user);
