@@ -2,22 +2,11 @@
 
 namespace App\Packages\User\Usecase;
 
-use App\Packages\User\Domain\User;
-use App\Packages\User\Domain\UserName;
-use App\Packages\User\Domain\UserAddress;
-use App\Packages\User\Domain\UserBirthday;
-use App\Packages\User\Domain\UserEmail;
-use App\Packages\User\Domain\UserEmailMagazineSubscription;
-use App\Packages\User\Domain\UserGender;
+use App\Packages\Shared\Usecase\UsecaseException;
 use App\Packages\User\Domain\UserId;
-use App\Packages\User\Domain\UserNameFurigana;
-use App\Packages\User\Domain\UserPassword;
-use App\Packages\User\Domain\UserPostalCode;
 use App\Packages\User\Domain\UserRepositoryInterface;
 use App\Packages\User\Domain\UserService;
-use App\Packages\User\Domain\UserTel;
-use Exception;
-use Illuminate\Support\Facades\DB;
+
 
 class UserGetAction
 {
@@ -33,8 +22,12 @@ class UserGetAction
 
     public function __invoke(int $userId)
     {
-        echo $userId;
         $user = $this->userRepository->findById(new UserId($userId));
+        
+        if($user == null) {
+            throw new UsecaseException('ID:'.$userId.' のユーザーは存在しません', 404);
+        }
+
         return new UserData($user);
     }
 }

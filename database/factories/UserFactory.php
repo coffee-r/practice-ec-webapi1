@@ -19,9 +19,19 @@ class UserFactory extends Factory
     {
         return [
             'name' => fake()->name(),
+            'name_furigana' => 'テストユーザー',
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'password' => 'Password1234',
+            'postal_code' => '0000000',
+            'address_prefectures' => '神奈川県',
+            'address_municipalities' => Str::random(20),
+            'address_others' => Str::random(20),
+            'tel' => '09012345678',
+            'birthday_year' => '2000',
+            'birthday_month' => '12',
+            'gender' => '男性',
+            'email_magazine_subscription' => 1,
             'remember_token' => Str::random(10),
         ];
     }

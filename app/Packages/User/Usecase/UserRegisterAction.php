@@ -9,6 +9,7 @@ use App\Packages\User\Domain\UserAddress;
 use App\Packages\User\Domain\UserBirthday;
 use App\Packages\User\Domain\UserEmail;
 use App\Packages\User\Domain\UserEmailMagazineSubscription;
+use App\Packages\User\Domain\UserFactoryInterface;
 use App\Packages\User\Domain\UserGender;
 use App\Packages\User\Domain\UserId;
 use App\Packages\User\Domain\UserNameFurigana;
@@ -17,27 +18,26 @@ use App\Packages\User\Domain\UserPostalCode;
 use App\Packages\User\Domain\UserRepositoryInterface;
 use App\Packages\User\Domain\UserService;
 use App\Packages\User\Domain\UserTel;
-use Exception;
 use Illuminate\Support\Facades\DB;
 
 class UserRegisterAction
 {
     private readonly UserRepositoryInterface $userRepository;
+    private readonly UserFactoryInterface $userFactory;
     private readonly UserService $userService;
 
 
-    public function __construct(UserRepositoryInterface $userRepository, UserService $userService)
+    public function __construct(UserRepositoryInterface $userRepository, UserFactoryInterface $userFactory, UserService $userService)
     {
         $this->userRepository = $userRepository;
+        $this->userFactory = $userFactory;
         $this->userService = $userService;
     }
 
     public function __invoke(UserRegisterCommand $userRegisterCommand)
     {
-        DB::transaction(function () use($userRegisterCommand) {
-
-            $user = new User(
-                new UserId(hexdec(uniqid())), // Infrastructure内でオートインクリメント採番する
+        $user = DB::transaction(function () use($userRegisterCommand) {
+            $user = $this->userFactory->create(
                 new UserName($userRegisterCommand->userName),
                 new UserNameFurigana($userRegisterCommand->userNameFurigana),
                 new UserGender($userRegisterCommand->userGender),
@@ -56,8 +56,9 @@ class UserRegisterAction
 
             $this->userRepository->save($user);
 
+            return $user;
         });
-        
-        
+
+        return new UserData($user);
     }
 }

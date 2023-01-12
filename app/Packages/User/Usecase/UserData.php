@@ -23,6 +23,7 @@ class UserData
 
     public function __construct(User $user)
     {
+        $this->userId = $user->userId->value;
         $this->userName = $user->userName->value;
         $this->userNameFurigana = $user->userNameFurigana->value;
         $this->userGender = $user->userGender->value;

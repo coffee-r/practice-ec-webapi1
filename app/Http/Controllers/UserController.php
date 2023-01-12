@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use App\Packages\User\Usecase\UserGetAction;
 use App\Packages\User\Usecase\UserRegisterAction;
@@ -43,8 +44,8 @@ class UserController extends Controller
             $request->input('emailMagazineSubscription'),
         );
         
-        $userRegisterAction($userRegisterCommand);
-        echo 'aaa';
+        $userData = $userRegisterAction($userRegisterCommand);
+        return new UserResource($userData);
     }
 
     /**
@@ -56,7 +57,7 @@ class UserController extends Controller
     public function show($id, UserGetAction $userGetAction)
     {
         $userData = $userGetAction($id);
-        var_dump($userData) ;
+        return new UserResource($userData);
     }
 
     /**
