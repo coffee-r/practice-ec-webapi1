@@ -2,6 +2,8 @@
 
 namespace App\Exceptions;
 
+use App\Packages\Shared\Domain\DomainException;
+use App\Packages\Shared\Usecase\UsecaseException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -46,5 +48,14 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    public function render($request, Throwable $exception)
+    {
+        if ($exception instanceof DomainException || $exception instanceof UsecaseException) {
+            return response()->json(['message'=> $exception->getMessage()], $exception->getCode());
+        }
+        
+        return parent::render($request, $exception);
     }
 }
