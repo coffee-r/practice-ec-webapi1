@@ -11,7 +11,6 @@ use App\Packages\User\Domain\UserEmail;
 use App\Packages\User\Domain\UserEmailMagazineSubscription;
 use App\Packages\User\Domain\UserFactoryInterface;
 use App\Packages\User\Domain\UserGender;
-use App\Packages\User\Domain\UserId;
 use App\Packages\User\Domain\UserNameFurigana;
 use App\Packages\User\Domain\UserPassword;
 use App\Packages\User\Domain\UserPostalCode;

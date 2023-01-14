@@ -2,8 +2,9 @@
 
 namespace App\Packages\User\Usecase;
 
-class UserRegisterCommand
+class UserUpdateCommand
 {
+    public readonly int $userId;
     public readonly string $userName;
     public readonly string $userNameFurigana;
     public readonly string $userGender;
@@ -19,6 +20,7 @@ class UserRegisterCommand
     public readonly bool $userEmailMagazineSubscription;
 
     public function __construct(
+        int $userId,
         string $userName,
         string $userNameFurigana,
         string $userGender,
@@ -34,6 +36,7 @@ class UserRegisterCommand
         bool $userEmailMagazineSubscription,
     )
     {
+        $this->userId = $userId;
         $this->userName = $userName;
         $this->userNameFurigana = $userNameFurigana;
         $this->userGender = $userGender;

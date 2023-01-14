@@ -8,11 +8,9 @@ use App\Packages\User\Domain\UserService;
 use App\Packages\User\Infrastructure\UserFactory;
 use App\Packages\User\Infrastructure\UserRepository;
 use App\Packages\User\Usecase\UserData;
-use App\Packages\User\Usecase\UserGetAction;
 use App\Packages\User\Usecase\UserRegisterAction;
 use App\Packages\User\Usecase\UserRegisterCommand;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Database\Eloquent\Factory;
 use Tests\TestCase;
 
 class UserRegisterActionTest extends TestCase
@@ -36,8 +34,8 @@ class UserRegisterActionTest extends TestCase
             'password',
             '9999999',
             '神奈川県',
-            'テスト',
-            'テスト',
+            'テスト市',
+            'テスト番地',
             '09099999999',
             true
         );
@@ -46,7 +44,24 @@ class UserRegisterActionTest extends TestCase
         $userData = $userRegisterAction($userRegisterCommand);
 
         $this->assertInstanceOf(UserData::class, $userData);
-        $this->assertDatabaseHas('users', ['email' => 'test@test.co.jp']);
+        $this->assertDatabaseHas(
+            'users',
+            [
+                'name' => 'test',
+                'name_furigana' => 'テスト',
+                'gender' => '女性',
+                'birthday_year' => 1999,
+                'birthday_month' => 12,
+                'email' => 'test@test.co.jp',
+                'password' => 'password',
+                'postal_code' => '9999999',
+                'address_prefectures' => '神奈川県',
+                'address_municipalities' => 'テスト市',
+                'address_others' => 'テスト番地',
+                'tel' => '09099999999',
+                'email_magazine_subscription' => 1
+            ]
+        );
         
     }
 

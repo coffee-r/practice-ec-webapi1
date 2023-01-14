@@ -33,7 +33,7 @@ JsonResource::withoutWrapping();を記述しdataのラップをなくす
 ### テストコード
 * ドメインレイヤのユニットテスト
 * ユースケースレイヤの機能テスト
-* コントローラーの機能テスト(OpenAPIのフォーマットチェック)
+* コントローラーの機能テスト(thephpleague/openapi-psr7-validatorを使う)
 
 ### DBの採番処理が絡むところ
 Factoryパターンで実装

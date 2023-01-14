@@ -9,7 +9,6 @@ use App\Packages\User\Infrastructure\UserRepository;
 use App\Packages\User\Usecase\UserData;
 use App\Packages\User\Usecase\UserGetAction;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Database\Eloquent\Factory;
 use Tests\TestCase;
 
 class UserGetActionTest extends TestCase
