@@ -5,19 +5,16 @@ namespace App\Packages\User\Usecase;
 use App\Packages\Shared\Usecase\UsecaseException;
 use App\Packages\User\Domain\UserId;
 use App\Packages\User\Domain\UserRepositoryInterface;
-use App\Packages\User\Domain\UserService;
 
 
 class UserGetAction
 {
     private readonly UserRepositoryInterface $userRepository;
-    private readonly UserService $userService;
 
 
-    public function __construct(UserRepositoryInterface $userRepository, UserService $userService)
+    public function __construct(UserRepositoryInterface $userRepository)
     {
         $this->userRepository = $userRepository;
-        $this->userService = $userService;
     }
 
     public function __invoke(int $userId)

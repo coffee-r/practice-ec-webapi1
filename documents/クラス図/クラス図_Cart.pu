@@ -1,0 +1,49 @@
+@startuml practice-ec-webapi
+
+package Cart{
+    package Domain{
+
+        class Cart{
+            <List> カート商品
+            商品を追加する()
+            商品を削除する()
+        }
+
+        class Product{
+            商品ID
+            商品名
+            税込価格
+            消費税
+        }
+
+         class PointProduct{
+            商品ID
+            商品名
+            必要ポイント
+        }
+    }
+    package Usecase{
+        class CartGetAction{
+            カート情報を取得する()
+        }
+
+        note top of CartGetAction : このカート取得では\nプロモーションを一切適用しない
+
+        class CartAddAction{
+            カートに商品を追加する()
+        }
+        class CartProductRemoveAction{
+            カートの商品を削除する()
+        }
+
+        note top of ProductListGetAction : 取得の条件を細かく指定できる\n * カテゴリ指定\n * 好レビュー順指定\n * 件数指定\n * オフセット指定\n など
+    }
+    package Infrastructure{
+    }
+
+    Domain <.do. Usecase
+    Domain <.do. Infrastructure
+}
+   
+
+@enduml
