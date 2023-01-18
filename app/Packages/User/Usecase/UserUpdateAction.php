@@ -41,20 +41,17 @@ class UserUpdateAction
                 throw new UsecaseException('ID:'.$userUpdateCommand->userId.' のユーザーは存在しません', 404);
             }
 
-            $user = new User(
-                new UserId($userUpdateCommand->userId),
-                new UserName($userUpdateCommand->userName),
-                new UserNameFurigana($userUpdateCommand->userNameFurigana),
-                new UserGender($userUpdateCommand->userGender),
-                new UserBirthday($userUpdateCommand->userBirthdayYear, $userUpdateCommand->userBirthdayMonth),
-                new UserEmail($userUpdateCommand->userEmail),
-                new UserPassword($userUpdateCommand->userPassword),
-                new UserPostalCode($userUpdateCommand->userPostalCode),
-                new UserAddress($userUpdateCommand->userAddressPrefectures, $userUpdateCommand->userAddressMunicipalities, $userUpdateCommand->userAddressOthers),
-                new UserTel($userUpdateCommand->userTel),
-                new UserEmailMagazineSubscription($userUpdateCommand->userEmailMagazineSubscription)
-            );
-    
+            $user->userName = new UserName($userUpdateCommand->userName);
+            $user->userNameFurigana = new UserNameFurigana($userUpdateCommand->userNameFurigana);
+            $user->userGender = new UserGender($userUpdateCommand->userGender);
+            $user->userBirthday = new UserBirthday($userUpdateCommand->userBirthdayYear, $userUpdateCommand->userBirthdayMonth);
+            $user->userEmail = new UserEmail($userUpdateCommand->userEmail);
+            $user->userPassword = new UserPassword($userUpdateCommand->userPassword);
+            $user->userPostalCode = new UserPostalCode($userUpdateCommand->userPostalCode);
+            $user->userAddress = new UserAddress($userUpdateCommand->userAddressPrefectures, $userUpdateCommand->userAddressMunicipalities, $userUpdateCommand->userAddressOthers);
+            $user->userTel = new UserTel($userUpdateCommand->userTel);
+            $user->userEmailMagazineSubscription = new UserEmailMagazineSubscription($userUpdateCommand->userEmailMagazineSubscription);
+
             if ($this->userService->isExists($user)){
                 throw new UsecaseException("このメールアドレスは既に使用されています");
             }
