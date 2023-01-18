@@ -15,7 +15,9 @@ package Cart{
             注文を生成する()
         }
 
-        
+        class PaymentMethod{
+            
+        }
     }
     package Usecase{
         class CartWithPromotionGetAction{
@@ -40,6 +42,10 @@ package Cart{
 
         class LinkedPaymentResultUpdateAction(){
             リンク式決済の結果を更新する()
+        }
+
+        class OrderConfirmMailSendAction{
+            注文確認メールを送信する()
         }
     }
     package Infrastructure{

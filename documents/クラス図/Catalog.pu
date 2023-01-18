@@ -1,0 +1,84 @@
+@startuml practice-ec-webapi
+
+package Catalog{
+    package Domain{
+
+        class Product{
+            商品ID
+            商品名
+            商品説明
+            カテゴリID
+            税込価格
+            消費税
+            ポイント価格
+            レビュー平均値
+            獲得予定ポイント
+        }
+
+        class CategoryHierarchy{
+            <List> Category
+            カテゴリを追加する()
+        }
+
+        class Category{
+            カテゴリID
+            カテゴリ名
+            子カテゴリリスト
+        }
+
+        class CategoryList{
+            <List> Category
+            カテゴリを追加する()
+        }
+       
+    }
+    package Usecase{
+
+        class ProductGetAction(){
+            商品を取得する
+        }
+
+        class CategoryHierarchyGetAction{
+            カテゴリ階層を取得する()
+        }
+        
+        interface ProductListByCategoryQueryServiceInterface{
+            カテゴリから商品情報一覧を取得する()
+        }
+
+        interface ProductListByKeywordQueryServiceInterface{
+            キーワード検索から商品情報一覧を取得する()
+        }
+
+        class ProductData{
+            商品ID
+            商品名
+            カテゴリ
+            税込価格
+            消費税
+            ポイント価格
+            レビュー平均値
+        }
+
+        class ProductListData{
+            <List> ProductData
+            商品を追加する()
+        }
+
+        interface MiniCategoriesWithProductListQueryServiceInterface{
+            中カテゴリから子カテゴリとその商品4つを取得する()
+        }
+
+        note top of ProductListQueryServiceInterface : 取得の条件を細かく指定できる\n * カテゴリ指定\n * 好レビュー順指定\n * 件数指定\n * オフセット指定\n など
+
+        
+    }
+    package Infrastructure{
+    }
+
+    Domain <.do. Usecase
+    Domain <.do. Infrastructure
+}
+   
+
+@enduml

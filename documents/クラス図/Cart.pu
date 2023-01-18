@@ -14,12 +14,11 @@ package Cart{
             商品名
             税込価格
             消費税
+            ポイント価格
         }
 
-         class PointProduct{
-            商品ID
-            商品名
-            必要ポイント
+        class YupacketProductTransferService{
+            
         }
     }
     package Usecase{
