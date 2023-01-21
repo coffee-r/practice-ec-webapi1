@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Packages\Cart\Domain;
 
-use App\Packages\Cart\Domain\Product;
+use App\Packages\Cart\Domain\CartProduct;
+use App\Packages\Cart\Domain\CartProductList;
 use App\Packages\Cart\Domain\ProductId;
-use App\Packages\Cart\Domain\ProductList;
 use App\Packages\Cart\Domain\ProductName;
 use App\Packages\Cart\Domain\ProductQuantity;
 use App\Packages\Cart\Domain\ProductUnitPointPrice;
@@ -13,24 +13,24 @@ use App\Packages\Cart\Domain\ProductUnitTax;
 use App\Packages\Shared\Domain\DomainException;
 use PHPUnit\Framework\TestCase;
 
-class ProductListTest extends TestCase
+class CartProductListTest extends TestCase
 {
     public function test_商品配列以外の配列でインスタンス化()
     {
-        $products = [
+        $cartProducts = [
             '商品1', '商品2', '商品3'
         ];
 
         $this->expectException(DomainException::class);
         $this->expectExceptionMessage('商品リストには商品のみを入れられます');
-        $productList = new ProductList($products);
+        $cartProductList = new CartProductList($cartProducts);
     }
 
     public function test_商品の追加()
     {
-        $productList = new ProductList([]);
+        $cartProductList = new CartProductList([]);
 
-        $addProduct1 = new Product(
+        $addCartProduct1 = new CartProduct(
             new ProductId(1),
             new ProductName('商品1'),
             new ProductUnitPriceWithTax(100),
@@ -39,7 +39,7 @@ class ProductListTest extends TestCase
             new ProductQuantity(1)
         );
 
-        $addProduct2 = new Product(
+        $addCartProduct2 = new CartProduct(
             new ProductId(2),
             new ProductName('商品2'),
             new ProductUnitPriceWithTax(200),
@@ -48,7 +48,7 @@ class ProductListTest extends TestCase
             new ProductQuantity(1)
         );
 
-        $addProduct3 = new Product(
+        $addCartProduct3 = new CartProduct(
             new ProductId(2),
             new ProductName('商品2'),
             new ProductUnitPriceWithTax(200),
@@ -57,21 +57,21 @@ class ProductListTest extends TestCase
             new ProductQuantity(2)
         );
 
-        $productList = $productList->add($addProduct1);
-        $productList = $productList->add($addProduct2);
-        $productList = $productList->add($addProduct3);
+        $cartProductList = $cartProductList->add($addCartProduct1);
+        $cartProductList = $cartProductList->add($addCartProduct2);
+        $cartProductList = $cartProductList->add($addCartProduct3);
         
         // 商品の種類数
-        $this->assertEquals(2, count($productList->value));
+        $this->assertEquals(2, count($cartProductList->value));
 
         // 商品の数量
-        $this->assertEquals(1, $productList->value[0]->productQuantity->value);
-        $this->assertEquals(3, $productList->value[1]->productQuantity->value);
+        $this->assertEquals(1, $cartProductList->value[0]->productQuantity->value);
+        $this->assertEquals(3, $cartProductList->value[1]->productQuantity->value);
     }
 
     public function test_商品の削除()
     {
-        $addProduct1 = new Product(
+        $addCartProduct1 = new CartProduct(
             new ProductId(1),
             new ProductName('商品1'),
             new ProductUnitPriceWithTax(100),
@@ -80,7 +80,7 @@ class ProductListTest extends TestCase
             new ProductQuantity(1)
         );
 
-        $addProduct2 = new Product(
+        $addCartProduct2 = new CartProduct(
             new ProductId(2),
             new ProductName('商品2'),
             new ProductUnitPriceWithTax(200),
@@ -89,10 +89,10 @@ class ProductListTest extends TestCase
             new ProductQuantity(1)
         );
 
-        $productList = new ProductList([$addProduct1, $addProduct2]);
+        $cartProductList = new CartProductList([$addCartProduct1, $addCartProduct2]);
 
-        $productList = $productList->remove($addProduct2->productId);
+        $cartProductList = $cartProductList->remove($addCartProduct2->productId);
 
-        $this->assertEquals(1, count($productList->value));
+        $this->assertEquals(1, count($cartProductList->value));
     }
 }

@@ -6,22 +6,22 @@ class Cart
 {
     public readonly CartId $cartId;
     public readonly UserId $userId;
-    public ProductList $productList;
+    public CartProductList $cartProductList;
 
-    public function __construct(CartId $cartId, UserId $userId, ProductList $productList)
+    public function __construct(CartId $cartId, UserId $userId, CartProductList $cartProductList)
     {
         $this->cartId = $cartId;
         $this->userId = $userId;
-        $this->productList = $productList;
+        $this->cartProductList = $cartProductList;
     }
 
-    public function addProduct(Product $product)
+    public function addProduct(CartProduct $cartProduct)
     {
-        $this->productList = $this->productList->add($product);
+        $this->cartProductList = $this->cartProductList->add($cartProduct);
     }
 
     public function removeProduct(ProductId $productId)
     {
-        $this->productList = $this->productList->remove($productId);
+        $this->cartProductList = $this->cartProductList->remove($productId);
     }
 }

@@ -4,7 +4,7 @@ namespace App\Packages\Cart\Domain;
 
 use App\Packages\Shared\Domain\DomainException;
 
-class ProductList
+class CartProductList
 {
     public readonly array $value;
     
@@ -14,8 +14,8 @@ class ProductList
             return;
         }
 
-        foreach ($value as $key => $product) {
-            if(($product instanceof Product) == false){
+        foreach ($value as $key => $cartProduct) {
+            if(($cartProduct instanceof CartProduct) == false){
                 throw new DomainException('商品リストには商品のみを入れられます');
             }
         }
@@ -23,29 +23,29 @@ class ProductList
         
     }
 
-    public function add(Product $addProduct) : ProductList{
+    public function add(CartProduct $addCartProduct) : CartProductList{
         $value = $this->value;
 
         // 数量追加の場合
-        foreach ($value as $key => $product) {
-            if($product->productId == $addProduct->productId){
-                $value[$key]->productQuantity = $value[$key]->productQuantity->add($addProduct->productQuantity);
-                return new ProductList($value);
+        foreach ($value as $key => $cartProduct) {
+            if($cartProduct->productId == $addCartProduct->productId){
+                $value[$key]->productQuantity = $value[$key]->productQuantity->add($addCartProduct->productQuantity);
+                return new CartProductList($value);
             }
         }
 
-        $value[] = $addProduct;
-        return new ProductList($value);
+        $value[] = $addCartProduct;
+        return new CartProductList($value);
     }
 
-    public function remove(ProductId $removeProductId) : ProductList{
+    public function remove(ProductId $removeCartProductId) : CartProductList{
 
         $value = $this->value;
 
-        foreach ($value as $key => $product) {
-            if($product->productId == $removeProductId){
+        foreach ($value as $key => $cartProduct) {
+            if($cartProduct->productId == $removeCartProductId){
                 unset($value[$key]);
-                return new ProductList($value);
+                return new CartProductList($value);
             }
         }
 

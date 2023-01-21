@@ -3,6 +3,8 @@
 namespace App\Packages\Cart\Infrastructure;
 
 use App\Models\Product as ModelsProduct;
+use App\Packages\Cart\Domain\CartProduct;
+use App\Packages\Cart\Domain\CartProductFactoryInterface;
 use App\Packages\Cart\Domain\Product;
 use App\Packages\Cart\Domain\ProductFactoryInterface;
 use App\Packages\Cart\Domain\ProductId;
@@ -13,9 +15,9 @@ use App\Packages\Cart\Domain\ProductUnitPriceWithTax;
 use App\Packages\Cart\Domain\ProductUnitTax;
 use App\Packages\Shared\Infrastructure\InfrastructureException;
 
-class ProductFactory implements ProductFactoryInterface
+class CartProductFactory implements CartProductFactoryInterface
 {
-    public function create(ProductId $productId, ProductQuantity $productQuantity) : Product
+    public function create(ProductId $productId, ProductQuantity $productQuantity) : CartProduct
     {
         $modelProduct = ModelsProduct::find($productId->value);
 
@@ -23,7 +25,7 @@ class ProductFactory implements ProductFactoryInterface
             throw new InfrastructureException('商品が見つかりませんでした');
         }
 
-        return new Product(
+        return new CartProduct(
             $productId,
             new ProductName($modelProduct->name),
             new ProductUnitPriceWithTax($modelProduct->price_with_tax),

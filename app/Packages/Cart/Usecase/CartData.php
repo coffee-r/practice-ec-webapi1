@@ -8,16 +8,16 @@ class CartData
 {
     public readonly int $cartId;
     public readonly int $userId;
-    public readonly array $productList;
+    public readonly array $cartProductList;
 
     public function __construct(Cart $cart)
     {
         $this->cartId = $cart->cartId->value;
         $this->userId = $cart->userId->value;
-        $productList = [];
-        foreach ($cart->productList->value as $key => $product) {
-            $productList[] = new ProductData($product);
+        $cartProductList = [];
+        foreach ($cart->cartProductList->value as $key => $product) {
+            $cartProductList[] = new CartProductData($product);
         }
-        $this->productList = $productList;
+        $this->cartProductList = $cartProductList;
     }
 }

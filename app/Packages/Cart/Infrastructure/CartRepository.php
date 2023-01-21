@@ -7,10 +7,10 @@ use App\Models\Product as ModelProduct;
 use App\Models\CartProduct as ModelCartProduct;
 use App\Packages\Cart\Domain\Cart;
 use App\Packages\Cart\Domain\CartId;
+use App\Packages\Cart\Domain\CartProduct;
+use App\Packages\Cart\Domain\CartProductList;
 use App\Packages\Cart\Domain\CartRepositoryInterface;
-use App\Packages\Cart\Domain\Product;
 use App\Packages\Cart\Domain\ProductId;
-use App\Packages\Cart\Domain\ProductList;
 use App\Packages\Cart\Domain\ProductName;
 use App\Packages\Cart\Domain\ProductQuantity;
 use App\Packages\Cart\Domain\ProductUnitPointPrice;
@@ -30,10 +30,10 @@ class CartRepository implements CartRepositoryInterface
         
         $modelCartProductList = ModelCartProduct::where('cart_id', $cartId->value)->get();
 
-        $productList = new ProductList([]);
+        $cartProductList = new CartProductList([]);
 
         foreach ($modelCartProductList as $key => $modelCartProduct) {
-            $productList = $productList->add(new Product(
+            $cartProductList = $cartProductList->add(new CartProduct(
                 new ProductId($modelCartProduct->product_id),
                 new ProductName($modelCartProduct->product_name),
                 new ProductUnitPriceWithTax($modelCartProduct->product_price_with_tax),
@@ -43,7 +43,7 @@ class CartRepository implements CartRepositoryInterface
             ));
         }
 
-        return new Cart($cartId, new UserId($modelCart->user_id), $productList);
+        return new Cart($cartId, new UserId($modelCart->user_id), $cartProductList);
     }
 
     public function save(Cart $cart)
@@ -57,17 +57,17 @@ class CartRepository implements CartRepositoryInterface
 
         $cartProducts = [];
 
-        foreach ($cart->productList->value as $key => $product) {
-            $cartProduct = [];
-            $cartProduct['cart_id'] = $cart->cartId->value;
-            $cartProduct['product_id'] = $product->productId->value;
-            $cartProduct['product_name'] = $product->productName->value;
-            $cartProduct['product_price_with_tax'] = $product->productPriceWithTax->value;
-            $cartProduct['product_tax'] = $product->productTax->value;
-            $cartProduct['product_point_price'] = $product->productPointPrice->value;
-            $cartProduct['product_quantity'] = $product->productQuantity->value;
+        foreach ($cart->cartProductList->value as $key => $cartProduct) {
+            $element = [];
+            $element['cart_id'] = $cart->cartId->value;
+            $element['product_id'] = $cartProduct->productId->value;
+            $element['product_name'] = $cartProduct->productName->value;
+            $element['product_price_with_tax'] = $cartProduct->productPriceWithTax->value;
+            $element['product_tax'] = $cartProduct->productTax->value;
+            $element['product_point_price'] = $cartProduct->productPointPrice->value;
+            $element['product_quantity'] = $cartProduct->productQuantity->value;
             
-            $cartProducts[] = $cartProduct;
+            $cartProducts[] = $element;
         }
 
         if(count($cartProducts) > 0){

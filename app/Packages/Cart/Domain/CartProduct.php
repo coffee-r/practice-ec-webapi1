@@ -2,7 +2,7 @@
 
 namespace App\Packages\Cart\Domain;
 
-class Product
+class CartProduct
 {
     public readonly ProductId $productId;
     public ProductName $productName;

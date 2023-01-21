@@ -4,8 +4,8 @@ namespace Tests\Feature\Packages\Cart;
 
 use App\Models\Cart;
 use App\Models\Product;
+use App\Packages\Cart\Infrastructure\CartProductFactory;
 use App\Packages\Cart\Infrastructure\CartRepository;
-use App\Packages\Cart\Infrastructure\ProductFactory;
 use App\Packages\Cart\Usecase\CartData;
 use App\Packages\Cart\Usecase\CartProductAddAction;
 use App\Packages\Cart\Usecase\CartProductAddCommand;
@@ -29,7 +29,7 @@ class CartProductAddActionTest extends TestCase
         $product = Product::factory()->create();
 
         $cartProductAddCommand = new CartProductAddCommand($cart->id, $product->id, 1);
-        $cartProductAddAction = new CartProductAddAction(new CartRepository(), new ProductFactory());
+        $cartProductAddAction = new CartProductAddAction(new CartRepository(), new CartProductFactory());
         $cartData = $cartProductAddAction($cartProductAddCommand);
 
         $this->assertInstanceOf(CartData::class, $cartData);
@@ -59,7 +59,7 @@ class CartProductAddActionTest extends TestCase
         $cart = Cart::factory()->create();
 
         $cartProductAddCommand = new CartProductAddCommand($cart->id, 1, 1);
-        $cartProductAddAction = new CartProductAddAction(new CartRepository(), new ProductFactory());
+        $cartProductAddAction = new CartProductAddAction(new CartRepository(), new CartProductFactory());
 
         $this->expectException(InfrastructureException::class);
         $this->expectExceptionMessage('商品が見つかりませんでした');
@@ -71,7 +71,7 @@ class CartProductAddActionTest extends TestCase
         $product = Product::factory()->create();
 
         $cartProductAddCommand = new CartProductAddCommand(1, $product->id, 1);
-        $cartProductAddAction = new CartProductAddAction(new CartRepository(), new ProductFactory());
+        $cartProductAddAction = new CartProductAddAction(new CartRepository(), new CartProductFactory());
 
         $this->expectException(UsecaseException::class);
         $this->expectExceptionMessage('存在しないカートです');
@@ -86,7 +86,7 @@ class CartProductAddActionTest extends TestCase
         $cartProductAddCommand1 = new CartProductAddCommand($cart->id, $product->id, 1);
         $cartProductAddCommand2 = new CartProductAddCommand($cart->id, $product->id, 2);
 
-        $cartProductAddAction = new CartProductAddAction(new CartRepository(), new ProductFactory());
+        $cartProductAddAction = new CartProductAddAction(new CartRepository(), new CartProductFactory());
         $cartProductAddAction($cartProductAddCommand1);
         $cartProductAddAction($cartProductAddCommand2);
 

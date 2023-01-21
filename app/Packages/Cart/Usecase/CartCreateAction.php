@@ -2,13 +2,9 @@
 
 namespace App\Packages\Cart\Usecase;
 
-use App\Packages\Cart\Domain\Cart;
 use App\Packages\Cart\Domain\CartFactoryInterface;
-use App\Packages\Cart\Domain\CartId;
+use App\Packages\Cart\Domain\CartProductList;
 use App\Packages\Cart\Domain\CartRepositoryInterface;
-use App\Packages\Cart\Domain\ProductId;
-use App\Packages\Cart\Domain\ProductList;
-use App\Packages\Cart\Domain\ProductQuantity;
 use App\Packages\Cart\Domain\UserId;
 use Illuminate\Support\Facades\DB;
 
@@ -26,7 +22,7 @@ class CartCreateAction
     public function __invoke(int $userId)
     {
         $cart = DB::transaction(function () use ($userId) {
-            $cart = $this->cartFactory->create(new UserId($userId), new ProductList([]));
+            $cart = $this->cartFactory->create(new UserId($userId), new CartProductList([]));
             $this->cartRepository->save($cart);
             return $cart;
         });

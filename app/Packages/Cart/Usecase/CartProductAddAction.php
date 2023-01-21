@@ -3,8 +3,8 @@
 namespace App\Packages\Cart\Usecase;
 
 use App\Packages\Cart\Domain\CartId;
+use App\Packages\Cart\Domain\CartProductFactoryInterface;
 use App\Packages\Cart\Domain\CartRepositoryInterface;
-use App\Packages\Cart\Domain\ProductFactoryInterface;
 use App\Packages\Cart\Domain\ProductId;
 use App\Packages\Cart\Domain\ProductQuantity;
 use App\Packages\Shared\Usecase\UsecaseException;
@@ -13,12 +13,12 @@ use Illuminate\Support\Facades\DB;
 class CartProductAddAction
 {
     private readonly CartRepositoryInterface $cartRepository;
-    private readonly ProductFactoryInterface $productFactory;
+    private readonly CartProductFactoryInterface $cartProductFactory;
 
-    public function __construct(CartRepositoryInterface $cartRepository, ProductFactoryInterface $productFactory)
+    public function __construct(CartRepositoryInterface $cartRepository, CartProductFactoryInterface $cartProductFactory)
     {
         $this->cartRepository = $cartRepository;
-        $this->productFactory = $productFactory;
+        $this->cartProductFactory = $cartProductFactory;
     }
 
     public function __invoke(CartProductAddCommand $cartProductAddCommand)
@@ -30,9 +30,9 @@ class CartProductAddAction
                 throw new UsecaseException('存在しないカートです');
             }
         
-            $product = $this->productFactory->create(new ProductId($cartProductAddCommand->productId), new ProductQuantity($cartProductAddCommand->productQuantity));
+            $cartProduct = $this->cartProductFactory->create(new ProductId($cartProductAddCommand->productId), new ProductQuantity($cartProductAddCommand->productQuantity));
 
-            $cart->addProduct($product);
+            $cart->addProduct($cartProduct);
 
             // $cart->tryTransferYupacketProduct();
 

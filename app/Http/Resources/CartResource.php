@@ -14,7 +14,7 @@ class CartResource extends JsonResource
      */
     public function toArray($request)
     {
-        if (empty($this->productList)){
+        if (empty($this->cartProductList)){
             return [
                 'id' => $this->cartId,
                 'userId' => $this->userId,
@@ -25,7 +25,7 @@ class CartResource extends JsonResource
         return [
             'id' => $this->cartId,
             'userId' => $this->userId,
-            'products' => CartProductResource::collection($this->productList)
+            'products' => CartProductResource::collection($this->cartProductList)
         ];
         
     }
