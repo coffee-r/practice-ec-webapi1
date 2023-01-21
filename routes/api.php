@@ -1,9 +1,9 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CartProductController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,3 +23,7 @@ use App\Http\Controllers\UserController;
 Route::post('/users', [UserController::class, 'store']);
 Route::patch('/users/{id}', [UserController::class, 'update']);
 Route::get('/users/{id}', [UserController::class, 'show']);
+
+Route::post('/carts', [CartController::class, 'store']);
+Route::post('/carts/{cartId}/products', [CartProductController::class, 'store']);
+Route::delete('/carts/{cartId}/products/{productId}', [CartProductController::class, 'destroy']);

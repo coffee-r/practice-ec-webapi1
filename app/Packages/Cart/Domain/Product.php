@@ -9,8 +9,6 @@ class Product
     public ProductUnitPriceWithTax $productPriceWithTax;
     public ProductUnitTax $productTax;
     public ProductUnitPointPrice $productPointPrice;
-    public ProductId | null $yupacketTransferProductId;
-    public ProductId | null $yupacketTransferBackProductId;
     public ProductQuantity $productQuantity;
 
     public function __construct(
@@ -19,8 +17,6 @@ class Product
         ProductUnitPriceWithTax $productPriceWithTax,
         ProductUnitTax $productTax,
         ProductUnitPointPrice $productPointPrice,
-        ProductId | null $yupacketTransferProductId,
-        ProductId | null $yupacketTransferBackProductId,
         ProductQuantity $productQuantity)
         {
             $this->productId = $productId;
@@ -28,8 +24,6 @@ class Product
             $this->productPriceWithTax = $productPriceWithTax;
             $this->productTax = $productTax;
             $this->productPointPrice = $productPointPrice;
-            $this->yupacketTransferProductId = $yupacketTransferProductId;
-            $this->yupacketTransferBackProductId = $yupacketTransferBackProductId;
             $this->productQuantity = $productQuantity;
         }
 }

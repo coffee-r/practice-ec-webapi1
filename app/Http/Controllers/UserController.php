@@ -13,16 +13,6 @@ use App\Packages\User\Usecase\UserUpdateCommand;
 class UserController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -90,16 +80,5 @@ class UserController extends Controller
 
         $userData = $userUpdateAction($UserUpdateCommand);
         return new UserResource($userData);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

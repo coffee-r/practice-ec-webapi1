@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use App\Packages\Shared\Domain\DomainException;
+use App\Packages\Shared\Infrastructure\InfrastructureException;
 use App\Packages\Shared\Usecase\UsecaseException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
@@ -52,7 +53,7 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $exception)
     {
-        if ($exception instanceof DomainException || $exception instanceof UsecaseException) {
+        if ($exception instanceof DomainException || $exception instanceof UsecaseException || $exception instanceof InfrastructureException) {
             return response()->json(['message'=> $exception->getMessage()], $exception->getCode());
         }
         

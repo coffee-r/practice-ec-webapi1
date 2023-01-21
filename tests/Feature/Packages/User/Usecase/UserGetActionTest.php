@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Packages\User;
 
 use App\Models\User;
 use App\Packages\Shared\Usecase\UsecaseException;

@@ -16,4 +16,9 @@ class ProductQuantity
 
         $this->value = $value;
     }
+
+    public function add(ProductQuantity $addQuantity)
+    {
+        return new ProductQuantity($this->value + $addQuantity->value);
+    }
 }

@@ -4,9 +4,9 @@ namespace App\Packages\Cart\Domain;
 
 class CartId
 {
-    public readonly string $value;
+    public readonly int $value;
 
-    public function __construct(string $value)
+    public function __construct(int $value)
     {
         $this->value = $value;
     }

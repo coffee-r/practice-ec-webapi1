@@ -11,8 +11,6 @@ class ProductData
     public readonly int $productPriceWithTax;
     public readonly int $productTax;
     public readonly int $productPointPrice;
-    public readonly int | null $yupacketTransferProductId;
-    public readonly int | null $yupacketTransferBackProductId;
     public readonly int $productQuantity;
 
     public function __construct(Product $product)
@@ -22,8 +20,6 @@ class ProductData
         $this->productPriceWithTax = $product->productPriceWithTax->value;
         $this->productTax = $product->productTax->value;
         $this->productPointPrice = $product->productPointPrice->value;
-        $this->yupacketTransferProductId = $product->yupacketTransferProductId->value;
-        $this->yupacketTransferBackProductId = $product->yupacketTransferBackProductId->value;
         $this->productQuantity = $product->productQuantity->value;        
     }
 }

@@ -4,7 +4,8 @@ package Cart{
     package Domain{
 
         class Cart{
-            <List> カート商品
+            カートID
+            商品リスト
             商品を追加する()
             商品を削除する()
         }
@@ -12,16 +13,24 @@ package Cart{
         class Product{
             商品ID
             商品名
-            税込価格
-            消費税
-            ポイント価格
+            税込単価
+            単価税額
+            ポイント単価
+            ゆうパケット振替先商品ID
+            ゆうパケット振戻商品ID
+            数量
         }
 
-        class YupacketProductTransferService{
-            
+        class ProductList{
+            <List> 商品
         }
+
+         note top of ProductList :・カート商品が単一商品・数量1で\n　ゆうパケット振替先商品IDが\n　ある時は振替\n・カート商品が複数個の場合で\n　ゆうパケット振戻商品IDが\n　ある時は振り戻し
     }
     package Usecase{
+        class CartCreateAction{
+            カートを作成する()
+        }
         class CartGetAction{
             カート情報を取得する()
         }
@@ -35,8 +44,8 @@ package Cart{
             カートの商品を削除する()
         }
 
-        note top of ProductListGetAction : 取得の条件を細かく指定できる\n * カテゴリ指定\n * 好レビュー順指定\n * 件数指定\n * オフセット指定\n など
     }
+
     package Infrastructure{
     }
 

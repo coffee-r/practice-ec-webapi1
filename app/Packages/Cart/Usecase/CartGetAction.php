@@ -16,7 +16,7 @@ class CartGetAction
         $this->cartRepository = $cartRepository;
     }
 
-    public function __invoke(string $cartId)
+    public function __invoke(int $cartId)
     {
         $cart = $this->cartRepository->find(new CartId($cartId));
         

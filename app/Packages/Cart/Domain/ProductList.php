@@ -29,12 +29,12 @@ class ProductList
         // 数量追加の場合
         foreach ($value as $key => $product) {
             if($product->productId == $addProduct->productId){
-                $value[$key]->productQuantity->value += $addProduct->productQuantity->value;
+                $value[$key]->productQuantity = $value[$key]->productQuantity->add($addProduct->productQuantity);
                 return new ProductList($value);
             }
         }
 
-        $value[] = $product;
+        $value[] = $addProduct;
         return new ProductList($value);
     }
 
@@ -52,52 +52,41 @@ class ProductList
         throw new DomainException('削除できる商品が見つかりませんでした');
     }
 
-    private function sumQuantity(){
-        $quantity = 0;
+    // public function sumQuantity(){
+    //     $quantity = 0;
 
-        foreach ($this->value as $key => $product) {
-            $quantity += $product->productQuantity->value;
-        }
+    //     foreach ($this->value as $key => $product) {
+    //         $quantity += $product->productQuantity->value;
+    //     }
 
-        return $quantity;
-    }
+    //     return $quantity;
+    // }
 
-    /**
-     * 通常の商品からゆうパケット商品に振り替えるべきか
-     *
-     * @return boolean
-     */
-    public function shouldBeYupacketTransfer(){
-        if($this->sumQuantity() !== 1){
-            return false;
-        }
+    // public function tryTransferYupacketProduct()
+    // {
+    //     $productList = $this->value;
 
-        foreach ($this->value as $key => $product) {
-            if($product->yupacketTransferProductId != null){
-                return true;
-            }
-        }
+    //     // 振り替え
+    //     if($this->sumQuantity() === 1){
+    //         foreach ($productList as $key => $product) {
+    //             if($product->yupacketTransferAfterProduct != null){
+    //                 $productList[$key] = $product->yupacketTransferAfterProduct;
+    //                 return $productList;
+    //             }
+    //         }
+    //     }
 
-        return false;
-    }
+    //     // 振り戻し
+    //     if($this->sumQuantity() > 1){
+    //         foreach ($productList as $key => $product) {
+    //             if($product->yupacketTransferBeforeProduct != null){
+    //                 $productList[$key] = $product->yupacketTransferBeforeProduct;
+    //                 return $productList;
+    //             }
+    //         }
+    //     }
 
-    /**
-     * ゆうパケット商品から通常の商品に振り戻すべきか
-     *
-     * @param Cart $cart
-     * @return boolean
-     */
-    public function shouldBeYupacketTransferBack(){
-        if($this->sumQuantity() === 1){
-            return false;
-        }
-
-        foreach ($this->value as $key => $product) {
-            if($product->yupacketTransferBackProductId != null){
-                return true;
-            }
-        }
-
-        return false;
-    }
+    //     // 振り替えも振り戻しもなかった時
+    //     return $productList;
+    // }
 }
