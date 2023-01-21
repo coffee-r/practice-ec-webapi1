@@ -10,6 +10,7 @@ use App\Packages\Cart\Usecase\CartData;
 use App\Packages\Cart\Usecase\CartProductAddAction;
 use App\Packages\Cart\Usecase\CartProductAddCommand;
 use App\Packages\Shared\Infrastructure\InfrastructureException;
+use App\Packages\Shared\Usecase\UsecaseException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -62,6 +63,18 @@ class CartProductAddActionTest extends TestCase
 
         $this->expectException(InfrastructureException::class);
         $this->expectExceptionMessage('商品が見つかりませんでした');
+        $cartProductAddAction($cartProductAddCommand);
+    }
+
+    public function test__存在しないカートへの追加()
+    {
+        $product = Product::factory()->create();
+
+        $cartProductAddCommand = new CartProductAddCommand(1, $product->id, 1);
+        $cartProductAddAction = new CartProductAddAction(new CartRepository(), new ProductFactory());
+
+        $this->expectException(UsecaseException::class);
+        $this->expectExceptionMessage('存在しないカートです');
         $cartProductAddAction($cartProductAddCommand);
     }
 

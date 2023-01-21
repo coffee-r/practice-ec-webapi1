@@ -25,5 +25,6 @@ Route::patch('/users/{id}', [UserController::class, 'update']);
 Route::get('/users/{id}', [UserController::class, 'show']);
 
 Route::post('/carts', [CartController::class, 'store']);
+Route::get('/carts/{cartId}', [CartController::class, 'show']);
 Route::post('/carts/{cartId}/products', [CartProductController::class, 'store']);
 Route::delete('/carts/{cartId}/products/{productId}', [CartProductController::class, 'destroy']);

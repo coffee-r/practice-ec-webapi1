@@ -8,6 +8,7 @@ use App\Packages\Cart\Infrastructure\CartRepository;
 use App\Packages\Cart\Usecase\CartData;
 use App\Packages\Cart\Usecase\CartProductRemoveAction;
 use App\Packages\Cart\Usecase\CartProductRemoveCommand;
+use App\Packages\Shared\Usecase\UsecaseException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -45,6 +46,16 @@ class CartProductRemoveActionTest extends TestCase
                 'product_id' => 2
             ]
         );
+    }
+
+    public function test__存在しないカートから商品を削除()
+    {
+        $cartProductRemoveCommand = new CartProductRemoveCommand(1, 1);
+        $cartProductRemoveAction = new CartProductRemoveAction(new CartRepository());
+
+        $this->expectException(UsecaseException::class);
+        $this->expectExceptionMessage('存在しないカートです');
+        $cartData = $cartProductRemoveAction($cartProductRemoveCommand);
     }
 
 }

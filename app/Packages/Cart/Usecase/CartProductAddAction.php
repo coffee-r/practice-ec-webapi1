@@ -7,6 +7,7 @@ use App\Packages\Cart\Domain\CartRepositoryInterface;
 use App\Packages\Cart\Domain\ProductFactoryInterface;
 use App\Packages\Cart\Domain\ProductId;
 use App\Packages\Cart\Domain\ProductQuantity;
+use App\Packages\Shared\Usecase\UsecaseException;
 use Illuminate\Support\Facades\DB;
 
 class CartProductAddAction
@@ -24,6 +25,10 @@ class CartProductAddAction
     {
         $cart = DB::transaction(function () use ($cartProductAddCommand) {
             $cart = $this->cartRepository->find(new CartId($cartProductAddCommand->cartId));
+
+            if ($cart == null){
+                throw new UsecaseException('存在しないカートです');
+            }
         
             $product = $this->productFactory->create(new ProductId($cartProductAddCommand->productId), new ProductQuantity($cartProductAddCommand->productQuantity));
 

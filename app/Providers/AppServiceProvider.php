@@ -7,6 +7,7 @@ use App\Packages\Cart\Domain\CartRepositoryInterface;
 use App\Packages\Cart\Domain\ProductFactoryInterface;
 use App\Packages\Cart\Infrastructure\CartFactory;
 use App\Packages\Cart\Infrastructure\CartRepository;
+use App\Packages\Cart\Infrastructure\ProductFactory;
 use App\Packages\User\Domain\UserFactoryInterface;
 use App\Packages\User\Domain\UserRepositoryInterface;
 use App\Packages\User\Infrastructure\UserFactory;

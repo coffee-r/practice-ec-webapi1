@@ -19,10 +19,10 @@ class CartController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, CartRepositoryInterface $cartRepositoryInterface, CartFactoryInterface $cartFactoryInterface)
+    public function store(Request $request, CartRepositoryInterface $cartRepository, CartFactoryInterface $cartFactory)
     {
         // 
-        $cartCreateAction = new CartCreateAction($cartRepositoryInterface, $cartFactoryInterface);
+        $cartCreateAction = new CartCreateAction($cartRepository, $cartFactory);
         $cartData = $cartCreateAction($request->input('userId'));
         return new CartResource($cartData);
     }
@@ -30,13 +30,13 @@ class CartController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int  $cartId
      * @return \Illuminate\Http\Response
      */
-    public function show($id, CartRepositoryInterface $cartRepositoryInterface)
+    public function show($cartId, CartRepositoryInterface $cartRepository)
     {
-        $cartGetAction = new CartGetAction($cartRepositoryInterface);
-        $cartData = $cartGetAction($id);
+        $cartGetAction = new CartGetAction($cartRepository);
+        $cartData = $cartGetAction($cartId);
         return new CartResource($cartData);
     }
 }
