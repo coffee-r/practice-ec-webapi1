@@ -31,7 +31,7 @@ class CartProductRemoveAction
 
             $cart->removeProduct($productId);
 
-            // $cart->tryTransferYupacket();
+            $cart->tryTransferYupacketProduct();
 
             $this->cartRepository->save($cart);
 

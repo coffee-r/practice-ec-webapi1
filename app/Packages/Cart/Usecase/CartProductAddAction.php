@@ -34,7 +34,7 @@ class CartProductAddAction
 
             $cart->addProduct($cartProduct);
 
-            // $cart->tryTransferYupacketProduct();
+            $cart->tryTransferYupacketProduct();
 
             $this->cartRepository->save($cart);
 

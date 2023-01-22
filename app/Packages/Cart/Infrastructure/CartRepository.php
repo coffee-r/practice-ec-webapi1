@@ -5,11 +5,13 @@ namespace App\Packages\Cart\Infrastructure;
 use App\Models\Cart as ModelCart;
 use App\Models\Product as ModelProduct;
 use App\Models\CartProduct as ModelCartProduct;
+use App\Models\YupacketProductRelation;
 use App\Packages\Cart\Domain\Cart;
 use App\Packages\Cart\Domain\CartId;
 use App\Packages\Cart\Domain\CartProduct;
 use App\Packages\Cart\Domain\CartProductList;
 use App\Packages\Cart\Domain\CartRepositoryInterface;
+use App\Packages\Cart\Domain\Product;
 use App\Packages\Cart\Domain\ProductId;
 use App\Packages\Cart\Domain\ProductName;
 use App\Packages\Cart\Domain\ProductQuantity;
@@ -33,13 +35,45 @@ class CartRepository implements CartRepositoryInterface
         $cartProductList = new CartProductList([]);
 
         foreach ($modelCartProductList as $key => $modelCartProduct) {
+
+            $yupacketTransferBeforeProduct = null;
+            $yupacketTransferAfterProduct = null;
+
+            $modelYupacketProductRelation = YupacketProductRelation::where('yupacket_product_id', $modelCartProduct->product_id)
+                                                                    ->orWhere('non_yupacket_product_id', $modelCartProduct->product_id)
+                                                                    ->first();
+            
+            if (!empty($modelYupacketProductRelation) && $modelYupacketProductRelation->yupacket_product_id == $modelCartProduct->product_id){
+                $modelYupacketTransferBeforeProduct = ModelProduct::find($modelYupacketProductRelation->non_yupacket_product_id);
+                $yupacketTransferBeforeProduct = new Product(
+                    new ProductId($modelYupacketTransferBeforeProduct->id),
+                    new ProductName($modelYupacketTransferBeforeProduct->name),
+                    new ProductUnitPriceWithTax($modelYupacketTransferBeforeProduct->price_with_tax),
+                    new ProductUnitTax($modelYupacketTransferBeforeProduct->tax),
+                    new ProductUnitPointPrice($modelYupacketTransferBeforeProduct->point_price)
+                );
+            }
+    
+            if (!empty($modelYupacketProductRelation) && $modelYupacketProductRelation->non_yupacket_product_id == $modelCartProduct->product_id){
+                $modelYupacketTransferAfterProduct = ModelProduct::find($modelYupacketProductRelation->yupacket_product_id);
+                $yupacketTransferAfterProduct = new Product(
+                    new ProductId($modelYupacketTransferAfterProduct->id),
+                    new ProductName($modelYupacketTransferAfterProduct->name),
+                    new ProductUnitPriceWithTax($modelYupacketTransferAfterProduct->price_with_tax),
+                    new ProductUnitTax($modelYupacketTransferAfterProduct->tax),
+                    new ProductUnitPointPrice($modelYupacketTransferAfterProduct->point_price)
+                );
+            }
+
             $cartProductList = $cartProductList->add(new CartProduct(
                 new ProductId($modelCartProduct->product_id),
                 new ProductName($modelCartProduct->product_name),
                 new ProductUnitPriceWithTax($modelCartProduct->product_price_with_tax),
                 new ProductUnitTax($modelCartProduct->product_tax),
                 new ProductUnitPointPrice($modelCartProduct->product_point_price),
-                new ProductQuantity($modelCartProduct->product_quantity)
+                $yupacketTransferBeforeProduct,
+                $yupacketTransferAfterProduct,
+                new ProductQuantity($modelCartProduct->product_quantity),
             ));
         }
 

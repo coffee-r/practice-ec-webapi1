@@ -24,4 +24,10 @@ class Cart
     {
         $this->cartProductList = $this->cartProductList->remove($productId);
     }
+
+    public function tryTransferYupacketProduct()
+    {
+        $this->cartProductList = $this->cartProductList->tryTransferToYupacketProduct();
+        $this->cartProductList = $this->cartProductList->tryTransferToNotYupacketProduct();
+    }
 }

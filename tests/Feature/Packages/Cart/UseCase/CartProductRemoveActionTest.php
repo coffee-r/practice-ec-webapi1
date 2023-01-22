@@ -58,4 +58,9 @@ class CartProductRemoveActionTest extends TestCase
         $cartData = $cartProductRemoveAction($cartProductRemoveCommand);
     }
 
+    public function test_ゆうパケット振り替え()
+    {
+        
+    }
+
 }

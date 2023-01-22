@@ -36,6 +36,8 @@ class CartProductListTest extends TestCase
             new ProductUnitPriceWithTax(100),
             new ProductUnitTax(10),
             new ProductUnitPointPrice(0),
+            null,
+            null,
             new ProductQuantity(1)
         );
 
@@ -45,6 +47,8 @@ class CartProductListTest extends TestCase
             new ProductUnitPriceWithTax(200),
             new ProductUnitTax(20),
             new ProductUnitPointPrice(0),
+            null,
+            null,
             new ProductQuantity(1)
         );
 
@@ -54,6 +58,8 @@ class CartProductListTest extends TestCase
             new ProductUnitPriceWithTax(200),
             new ProductUnitTax(20),
             new ProductUnitPointPrice(0),
+            null,
+            null,
             new ProductQuantity(2)
         );
 
@@ -71,28 +77,68 @@ class CartProductListTest extends TestCase
 
     public function test_商品の削除()
     {
-        $addCartProduct1 = new CartProduct(
+        $cartProduct1 = new CartProduct(
             new ProductId(1),
             new ProductName('商品1'),
             new ProductUnitPriceWithTax(100),
             new ProductUnitTax(10),
             new ProductUnitPointPrice(0),
+            null,
+            null,
             new ProductQuantity(1)
         );
 
-        $addCartProduct2 = new CartProduct(
+        $cartProduct2 = new CartProduct(
             new ProductId(2),
             new ProductName('商品2'),
             new ProductUnitPriceWithTax(200),
             new ProductUnitTax(20),
             new ProductUnitPointPrice(0),
+            null,
+            null,
             new ProductQuantity(1)
         );
 
-        $cartProductList = new CartProductList([$addCartProduct1, $addCartProduct2]);
+        $cartProductList = new CartProductList([$cartProduct1, $cartProduct2]);
 
-        $cartProductList = $cartProductList->remove($addCartProduct2->productId);
+        $cartProductList = $cartProductList->remove($cartProduct2->productId);
 
         $this->assertEquals(1, count($cartProductList->value));
+    }
+
+    public function test_商品の数量集計()
+    {
+        $cartProduct1 = new CartProduct(
+            new ProductId(1),
+            new ProductName('商品1'),
+            new ProductUnitPriceWithTax(100),
+            new ProductUnitTax(10),
+            new ProductUnitPointPrice(0),
+            null,
+            null,
+            new ProductQuantity(1)
+        );
+
+        $cartProduct2 = new CartProduct(
+            new ProductId(2),
+            new ProductName('商品2'),
+            new ProductUnitPriceWithTax(200),
+            new ProductUnitTax(20),
+            new ProductUnitPointPrice(0),
+            null,
+            null,
+            new ProductQuantity(2)
+        );
+
+        $cartProductList = new CartProductList([$cartProduct1, $cartProduct2]);
+
+        $sumQuantity = $cartProductList->sumQuantity();
+
+        $this->assertEquals(3, $sumQuantity);
+    }
+
+    public function test_ゆうパケット振り替え()
+    {
+
     }
 }
