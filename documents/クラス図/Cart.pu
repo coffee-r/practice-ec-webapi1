@@ -25,7 +25,19 @@ package Cart{
             <List> 商品
         }
 
-         note top of ProductList :・カート商品が単一商品・数量1で\n　ゆうパケット振替先商品IDが\n　ある時は振替\n・カート商品が複数個の場合で\n　ゆうパケット振戻商品IDが\n　ある時は振り戻し
+        note top of ProductList :・カート商品が単一商品・数量1で\n　ゆうパケット振替先商品IDが\n　ある時は振替\n・カート商品が複数個の場合で\n　ゆうパケット振戻商品IDが\n　ある時は振り戻し
+
+        interface CartRepositoryInterface{
+
+        }
+
+        interface CartFactoryInterface{
+
+        }
+
+        interface CartProductFactoryInterface{
+
+        }
     }
     package Usecase{
         class CartCreateAction{
@@ -35,9 +47,9 @@ package Cart{
             カート情報を取得する()
         }
 
-        note top of CartGetAction : このカート取得では\nプロモーションを一切適用しない
+        note top of CartGetAction : このカート取得では\nプロモーションを\n一切適用しない
 
-        class CartAddAction{
+        class CartProductAddAction{
             カートに商品を追加する()
         }
         class CartProductRemoveAction{
@@ -47,10 +59,20 @@ package Cart{
     }
 
     package Infrastructure{
-    }
+        class CartRepository{
 
-    Domain <.do. Usecase
-    Domain <.do. Infrastructure
+        }
+        class CartFactory{
+
+        }
+        class CartProductFactory{
+
+        }
+
+        CartRepository  ..|> CartRepositoryInterface
+        CartFactory ..|> CartFactoryInterface
+        CartProductFactory ..|> CartProductFactoryInterface
+    }
 }
    
 

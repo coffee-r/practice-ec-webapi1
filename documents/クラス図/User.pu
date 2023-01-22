@@ -16,25 +16,46 @@ package User{
             メールマガジン購読
         }
 
-        note top of User : * ユーザー間でメールアドレスの\n   重複はできない
-       
+        note right of User : ユーザー間でメールアドレスの\n重複はできない
+
+
+        interface UserRepositoryInterface{
+
+        }
+
+        interface UserFactoryInterface{
+            
+        } 
     }
+
     package Usecase{
         class UserGetAction{
             ユーザー情報を取得する()
         }
-        class UserRegisterAction{
-            ユーザーを新規登録する()
-        }
         class UserUpdateAction{
             ユーザー情報を更新する()
         }
-    }
-    package Infrastructure{
+        class UserRegisterAction{
+            ユーザーを新規登録する()
+        }
+
+        UserRepositoryInterface <.. UserGetAction
+        UserRepositoryInterface <.. UserUpdateAction
+        UserRepositoryInterface <.. UserRegisterAction
+        UserFactoryInterface <.. UserRegisterAction
     }
 
-    Domain <.do. Usecase
-    Domain <.do. Infrastructure
+    package Infrastructure{
+        class UserRepository{
+
+        }
+        class UserFactory{
+
+        }
+
+        UserRepository  ..|> UserRepositoryInterface
+        UserFactory ..|> UserFactoryInterface
+    }
 }
    
 
