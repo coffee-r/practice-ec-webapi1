@@ -16,16 +16,24 @@ package Cart{
             税込単価
             単価税額
             ポイント単価
-            ゆうパケット振替先商品ID
-            ゆうパケット振戻商品ID
+        }
+
+        class CartProduct{
+            商品ID
+            商品名
+            税込単価
+            単価税額
+            ポイント単価
+            ゆうパケット振り替え後商品
+            ゆうパケット振り替え前商品
             数量
         }
 
-        class ProductList{
-            <List> 商品
+        class CartProductList{
+            <List> カート商品
         }
 
-        note top of ProductList :・カート商品が単一商品・数量1で\n　ゆうパケット振替先商品IDが\n　ある時は振替\n・カート商品が複数個の場合で\n　ゆうパケット振戻商品IDが\n　ある時は振り戻し
+        note top of CartProductList :・カート商品が単一商品・数量1で\n　ゆうパケット振替先商品が\n　ある時は振替\n・カート商品が複数個の場合で\n　ゆうパケット振戻商品が\n　ある時は振り戻し
 
         interface CartRepositoryInterface{
 
@@ -39,6 +47,7 @@ package Cart{
 
         }
     }
+
     package Usecase{
         class CartCreateAction{
             カートを作成する()
