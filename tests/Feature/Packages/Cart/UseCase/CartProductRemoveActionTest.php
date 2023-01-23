@@ -4,6 +4,8 @@ namespace Tests\Feature\Packages\Cart;
 
 use App\Models\Cart;
 use App\Models\CartProduct;
+use App\Models\Product;
+use App\Models\YupacketProductRelation;
 use App\Packages\Cart\Infrastructure\CartRepository;
 use App\Packages\Cart\Usecase\CartData;
 use App\Packages\Cart\Usecase\CartProductRemoveAction;
@@ -60,7 +62,30 @@ class CartProductRemoveActionTest extends TestCase
 
     public function test_ゆうパケット振り替え()
     {
-        
+        $cart = Cart::factory()->create();
+        $cartProduct1 = CartProduct::factory()->create(['cart_id' => $cart->id, 'product_id' => 10, 'product_quantity' => 1]);
+        $cartProduct2 = CartProduct::factory()->create(['cart_id' => $cart->id, 'product_id' => 20, 'product_quantity' => 1]);
+        $yupacketProduct = Product::factory()->create();
+        $yupacketRelation = YupacketProductRelation::factory()->create(['yupacket_product_id' => $yupacketProduct->id, 'non_yupacket_product_id' => $cartProduct1->product_id]);
+
+        $cartProductRemoveCommand = new CartProductRemoveCommand($cart->id, 20);
+        $cartProductRemoveAction = new CartProductRemoveAction(new CartRepository());
+        $cartProductRemoveAction($cartProductRemoveCommand);
+
+        $this->assertDatabaseMissing(
+            'cart_products',
+            [
+                'cart_id' => $cart->id,
+                'product_id' => $cartProduct1->product_id
+            ]
+        );
+        $this->assertDatabaseHas(
+            'cart_products',
+            [
+                'cart_id' => $cart->id,
+                'product_id' => $yupacketProduct->id
+            ]
+        );
     }
 
 }

@@ -356,17 +356,17 @@ class CartProductListTest extends TestCase
         $cartProductList = $cartProductList->tryTransferToNotYupacketProduct();
 
         // 商品は振り戻るはず
-        $this->assertEquals(1, $cartProductList->value[0]->productId->value);
-        $this->assertEquals('商品1', $cartProductList->value[0]->productName->value);
-        $this->assertEquals(100, $cartProductList->value[0]->productPriceWithTax->value);
-        $this->assertEquals(10, $cartProductList->value[0]->productPointPrice->value);
-        $this->assertEquals(1, $cartProductList->value[0]->productQuantity->value);
+        $this->assertEquals(1, $cartProductList->value[1]->productId->value);
+        $this->assertEquals('商品1', $cartProductList->value[1]->productName->value);
+        $this->assertEquals(100, $cartProductList->value[1]->productPriceWithTax->value);
+        $this->assertEquals(10, $cartProductList->value[1]->productPointPrice->value);
+        $this->assertEquals(1, $cartProductList->value[1]->productQuantity->value);
 
         // 対象でない商品はそのまま
-        $this->assertEquals(3, $cartProductList->value[1]->productId->value);
-        $this->assertEquals('商品3', $cartProductList->value[1]->productName->value);
-        $this->assertEquals(300, $cartProductList->value[1]->productPriceWithTax->value);
-        $this->assertEquals(30, $cartProductList->value[1]->productPointPrice->value);
-        $this->assertEquals(1, $cartProductList->value[1]->productQuantity->value);
+        $this->assertEquals(3, $cartProductList->value[0]->productId->value);
+        $this->assertEquals('商品3', $cartProductList->value[0]->productName->value);
+        $this->assertEquals(300, $cartProductList->value[0]->productPriceWithTax->value);
+        $this->assertEquals(30, $cartProductList->value[0]->productPointPrice->value);
+        $this->assertEquals(1, $cartProductList->value[0]->productQuantity->value);
     }
 }

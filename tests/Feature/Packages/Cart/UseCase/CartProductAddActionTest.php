@@ -4,6 +4,7 @@ namespace Tests\Feature\Packages\Cart;
 
 use App\Models\Cart;
 use App\Models\Product;
+use App\Models\YupacketProductRelation;
 use App\Packages\Cart\Infrastructure\CartProductFactory;
 use App\Packages\Cart\Infrastructure\CartRepository;
 use App\Packages\Cart\Usecase\CartData;
@@ -106,7 +107,52 @@ class CartProductAddActionTest extends TestCase
 
     public function test_ゆうパケット振り替え()
     {
-        
+        $cart = Cart::factory()->create();
+        $product1 = Product::factory()->create();
+        $product2 = Product::factory()->create();
+        $yupacketRelation = YupacketProductRelation::factory()->create(['yupacket_product_id' => $product2->id, 'non_yupacket_product_id' => $product1->id]);
+
+        $cartProductAddCommand = new CartProductAddCommand($cart->id, $product1->id, 1);
+        $cartProductAddAction = new CartProductAddAction(new CartRepository(), new CartProductFactory());
+        $cartProductAddAction($cartProductAddCommand);
+
+        $this->assertDatabaseHas(
+            'cart_products',
+            [
+                'cart_id' => $cart->id,
+                'product_id' => $product2->id,
+                'product_name' => $product2->name,
+                'product_price_with_tax' => $product2->price_with_tax,
+                'product_tax' => $product2->tax,
+                'product_point_price' => $product2->point_price,
+                'product_quantity' => 1
+            ]
+        );
+    }
+
+    public function test_ゆうパケット振り戻し()
+    {
+        $cart = Cart::factory()->create();
+        $product1 = Product::factory()->create();
+        $product2 = Product::factory()->create();
+        $yupacketRelation = YupacketProductRelation::factory()->create(['yupacket_product_id' => $product2->id, 'non_yupacket_product_id' => $product1->id]);
+
+        $cartProductAddCommand = new CartProductAddCommand($cart->id, $product2->id, 2);
+        $cartProductAddAction = new CartProductAddAction(new CartRepository(), new CartProductFactory());
+        $cartProductAddAction($cartProductAddCommand);
+
+        $this->assertDatabaseHas(
+            'cart_products',
+            [
+                'cart_id' => $cart->id,
+                'product_id' => $product1->id,
+                'product_name' => $product1->name,
+                'product_price_with_tax' => $product1->price_with_tax,
+                'product_tax' => $product1->tax,
+                'product_point_price' => $product1->point_price,
+                'product_quantity' => 2
+            ]
+        );
     }
 
 }

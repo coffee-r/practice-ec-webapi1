@@ -44,7 +44,7 @@ class CartProductList
 
         foreach ($value as $key => $cartProduct) {
             if($cartProduct->productId == $removeCartProductId){
-                unset($value[$key]);
+                array_splice($value, $key, 1);
                 return new CartProductList($value);
             }
         }
@@ -69,31 +69,34 @@ class CartProductList
      */
     public function tryTransferToYupacketProduct()
     {
-        $cartProductList = $this->value;
+        $cartProductList = clone $this;
 
         // カート内商品が単品でない時は振替えない
-        if ($this->sumQuantity() !== 1) {
-            return new CartProductList($cartProductList);
+        if ($cartProductList->sumQuantity() !== 1) {
+            return $cartProductList;
         }
 
-        foreach ($cartProductList as $key => $cartProduct) {
+        foreach ($cartProductList->value as $key => $cartProduct) {
             // 振り替え商品が設定されていない商品は無視
             if ($cartProduct->yupacketTransferAfterProduct == null) {continue;}
             
             // 振り替え
-            $cartProductList[$key] = new CartProduct(
-                $cartProduct->yupacketTransferAfterProduct->productId,
-                $cartProduct->yupacketTransferAfterProduct->productName,
-                $cartProduct->yupacketTransferAfterProduct->productPriceWithTax,
-                $cartProduct->yupacketTransferAfterProduct->productTax,
-                $cartProduct->yupacketTransferAfterProduct->productPointPrice,
-                $cartProduct->toProduct(),
-                null,
-                new ProductQuantity(1)
+            $cartProductList = $cartProductList->remove($cartProduct->productId);
+            $cartProductList = $cartProductList->add(
+                new CartProduct(
+                    $cartProduct->yupacketTransferAfterProduct->productId,
+                    $cartProduct->yupacketTransferAfterProduct->productName,
+                    $cartProduct->yupacketTransferAfterProduct->productPriceWithTax,
+                    $cartProduct->yupacketTransferAfterProduct->productTax,
+                    $cartProduct->yupacketTransferAfterProduct->productPointPrice,
+                    $cartProduct->toProduct(),
+                    null,
+                    new ProductQuantity(1)
+                )
             );
         }
 
-        return new CartProductList($cartProductList);
+        return $cartProductList;
     }
 
     /**
@@ -103,30 +106,33 @@ class CartProductList
      */
     public function tryTransferToNotYupacketProduct(){
 
-        $cartProductList = $this->value;
+        $cartProductList = clone $this;
 
         // カート内商品が単品の時は振り戻さない
-        if ($this->sumQuantity() === 1) {
-            return new CartProductList($cartProductList);
+        if ($cartProductList->sumQuantity() === 1) {
+            return $cartProductList;
         }
 
-        foreach ($cartProductList as $key => $cartProduct) {
+        foreach ($cartProductList->value as $key => $cartProduct) {
             // 振り戻し商品が設定されていない商品は無視
             if ($cartProduct->yupacketTransferBeforeProduct == null) {continue;}
             
             // 振り戻し
-            $cartProductList[$key] = new CartProduct(
-                $cartProduct->yupacketTransferBeforeProduct->productId,
-                $cartProduct->yupacketTransferBeforeProduct->productName,
-                $cartProduct->yupacketTransferBeforeProduct->productPriceWithTax,
-                $cartProduct->yupacketTransferBeforeProduct->productTax,
-                $cartProduct->yupacketTransferBeforeProduct->productPointPrice,
-                null,
-                $cartProduct->toProduct(),
-                $cartProduct->productQuantity
+            $cartProductList = $cartProductList->remove($cartProduct->productId);
+            $cartProductList = $cartProductList->add(
+                new CartProduct(
+                    $cartProduct->yupacketTransferBeforeProduct->productId,
+                    $cartProduct->yupacketTransferBeforeProduct->productName,
+                    $cartProduct->yupacketTransferBeforeProduct->productPriceWithTax,
+                    $cartProduct->yupacketTransferBeforeProduct->productTax,
+                    $cartProduct->yupacketTransferBeforeProduct->productPointPrice,
+                    null,
+                    $cartProduct->toProduct(),
+                    $cartProduct->productQuantity
+                )
             );
         }
 
-        return new CartProductList($cartProductList);
+        return $cartProductList;
     }
 }
