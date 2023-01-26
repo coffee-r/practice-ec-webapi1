@@ -3,6 +3,7 @@
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CartProductController;
+use App\Http\Controllers\ProductCategoryController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,6 +24,8 @@ use Illuminate\Support\Facades\Route;
 Route::post('/users', [UserController::class, 'store']);
 Route::patch('/users/{id}', [UserController::class, 'update']);
 Route::get('/users/{id}', [UserController::class, 'show']);
+
+Route::get('/categories', [ProductCategoryController::class, 'index']);
 
 Route::post('/carts', [CartController::class, 'store']);
 Route::get('/carts/{cartId}', [CartController::class, 'show']);

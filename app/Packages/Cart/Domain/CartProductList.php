@@ -6,6 +6,7 @@ use App\Packages\Shared\Domain\DomainException;
 
 class CartProductList
 {
+    /** @var array<CartProduct> */
     public readonly array $value;
     
     public function __construct(array $value){

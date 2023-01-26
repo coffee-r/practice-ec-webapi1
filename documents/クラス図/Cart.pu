@@ -2,14 +2,6 @@
 
 package Cart{
     package Domain{
-
-        class Cart{
-            カートID
-            商品リスト
-            商品を追加する()
-            商品を削除する()
-        }
-
         class Product{
             商品ID
             商品名
@@ -35,6 +27,13 @@ package Cart{
 
         note top of CartProductList :・カート商品が単一商品・数量1で\n　ゆうパケット振替先商品が\n　ある時は振替\n・カート商品が複数個の場合で\n　ゆうパケット振戻商品が\n　ある時は振り戻し
 
+         class Cart{
+            カートID
+            商品リスト
+            商品を追加する()
+            商品を削除する()
+        }
+
         interface CartRepositoryInterface{
 
         }
@@ -56,7 +55,7 @@ package Cart{
             カート情報を取得する()
         }
 
-        note top of CartGetAction : このカート取得では\nプロモーションを\n一切適用しない
+        note left of CartGetAction : このカート取得では\nプロモーションを\n一切適用しない
 
         class CartProductAddAction{
             カートに商品を追加する()
@@ -64,6 +63,13 @@ package Cart{
         class CartProductRemoveAction{
             カートの商品を削除する()
         }
+
+        CartRepositoryInterface <... CartCreateAction
+        CartFactoryInterface <... CartCreateAction
+        CartRepositoryInterface <... CartGetAction
+        CartRepositoryInterface <... CartProductAddAction
+        CartProductFactoryInterface <... CartProductAddAction
+        CartRepositoryInterface <... CartProductRemoveAction
 
     }
 
