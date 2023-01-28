@@ -16,9 +16,12 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->text('description');
+            $table->integer('category_id');
             $table->integer('price_with_tax');
             $table->integer('tax');
             $table->integer('point_price');
+            $table->integer('review_score_average');
             $table->timestamps();
         });
     }

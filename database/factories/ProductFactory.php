@@ -19,9 +19,12 @@ class ProductFactory extends Factory
     {
         return [
             'name' => Str::random(30),
+            'description' => Str::random(100),
+            'category_id' => rand(0, 99999),
             'price_with_tax' => rand(0, 99999),
             'tax' => rand(0, 99999),
             'point_price' => rand(0, 99999),
+            'review_score_average' => rand(1, 5)
         ];
     }
 }

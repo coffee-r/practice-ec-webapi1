@@ -14,11 +14,7 @@ package Catalog{
             レビュー平均値
         }
 
-        class ProductList{
-            <List> 商品
-        }
-
-        interface ProductListRepositoryInterface{
+        interface ProductRepositoryInterface{
             
         }
 
@@ -53,29 +49,38 @@ package Catalog{
             商品を取得する()
         }
 
-        class ProductListGetAction{
-            商品一覧を取得する()
+        interface ProductOutlineListQueryServiceInterface{
+
         }
 
-        note top of ProductListGetAction : 取得の条件を細かく指定できる\n * カテゴリ指定\n * キーワード指定\n * 価格順\n * 好レビュー順指定\n * 件数指定\n * オフセット指定 など
+        class ProductOutlineListQuery{
+            ページ番号
+            1ページあたりの件数
+            カテゴリID
+            キーワード
+            並び順
+        }
 
-        class CategoryHierarchyGetAction{
-            カテゴリ階層を取得する()
+        note top of ProductOutlineListQueryServiceInterface : 取得の条件を細かく指定できる\n * カテゴリ指定\n * キーワード指定\n * 価格順\n * 好レビュー順指定\n * 件数指定\n * オフセット指定 など        
+
+        class LargeCategoryListGetAction{
+            大カテゴリ一覧を取得する()
         }
 
         interface SmallCategoryListWithProductListQueryServiceInterface{
             中カテゴリIDから、子カテゴリとその商品4つを取得する()
         }
 
+        LargeCategoryListRepositoryInterface <.... LargeCategoryListGetAction
+
         
     }
     package Infrastructure{
 
-        class CategoryHierarchyRepository{
-
+        class LargeCategoryListRepository{
         }
 
-        CategoryHierarchyRepository  ..|> CategoryHierarchyRepositoryInterface
+        LargeCategoryListRepository  ..|> LargeCategoryListRepositoryInterface
     }
 }
    

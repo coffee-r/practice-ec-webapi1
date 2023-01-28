@@ -52,7 +52,6 @@ class LargeCategoryListRepository implements LargeCategoryListRepositoryInterfac
             }
         }
 
-        // 大カテゴリのドメインクラス一覧から大カテゴリ一覧のドメインクラスを作って返却
         return new LargeCategoryList($largeCategoryList);
 
     }

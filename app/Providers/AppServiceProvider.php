@@ -9,7 +9,9 @@ use App\Packages\Cart\Infrastructure\CartFactory;
 use App\Packages\Cart\Infrastructure\CartProductFactory;
 use App\Packages\Cart\Infrastructure\CartRepository;
 use App\Packages\Catalog\Domain\LargeCategoryListRepositoryInterface;
+use App\Packages\Catalog\Domain\ProductRepositoryInterface;
 use App\Packages\Catalog\Infrastructure\LargeCategoryListRepository;
+use App\Packages\Catalog\Infrastructure\ProductRepository;
 use App\Packages\User\Domain\UserFactoryInterface;
 use App\Packages\User\Domain\UserRepositoryInterface;
 use App\Packages\User\Infrastructure\UserFactory;
@@ -30,6 +32,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(UserRepositoryInterface::class, UserRepository::class);
         $this->app->singleton(UserFactoryInterface::class, UserFactory::class);
 
+        $this->app->singleton(ProductRepositoryInterface::class, ProductRepository::class);
         $this->app->singleton(LargeCategoryListRepositoryInterface::class, LargeCategoryListRepository::class);
 
         $this->app->singleton(CartRepositoryInterface::class, CartRepository::class);
