@@ -26,6 +26,7 @@ Route::post('/users', [UserController::class, 'store']);
 Route::patch('/users/{id}', [UserController::class, 'update']);
 Route::get('/users/{id}', [UserController::class, 'show']);
 
+Route::get('/products', [ProductController::class, 'index']);
 Route::get('/products/{id}', [ProductController::class, 'show']);
 Route::get('/categories', [ProductCategoryController::class, 'index']);
 
