@@ -6,5 +6,5 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 interface ProductOutlineQueryServiceInterface
 {
-    public function findPagenator(ProductOutlineQuery $productOutlineQuery) : LengthAwarePaginator | null;
+    public function findPagenator(ProductOutlineQuery $productOutlineQuery) : ProductOutlinePagenationData | null;
 }

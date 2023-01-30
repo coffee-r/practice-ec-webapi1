@@ -7,7 +7,7 @@ use App\Packages\Shared\Usecase\UsecaseException;
 class ProductOutlineQuery
 {
     public readonly int $page;
-    public readonly int $limitPerPage;
+    public readonly int $perPage;
     public readonly int | null $categoryId;
     public readonly string | null $productKeyword;
     public readonly string | null $sort;
@@ -21,7 +21,7 @@ class ProductOutlineQuery
 
     public function __construct(
         int $page,
-        int $limitPerPage,
+        int $perPage,
         int | null $categoryId,
         string | null $productKeyword,
         string | null $sort
@@ -31,11 +31,11 @@ class ProductOutlineQuery
             throw new UsecaseException('ページ番号は1以上です');
         }
 
-        if ($limitPerPage < 1){
+        if ($perPage < 1){
             throw new UsecaseException('1ページあたりの件数は1以上です');
         }
 
-        if ($limitPerPage > 100){
+        if ($perPage > 100){
             throw new UsecaseException('1ページあたりの件数は100以内です');
         }
 
@@ -46,7 +46,7 @@ class ProductOutlineQuery
         }
 
         $this->page = $page;
-        $this->limitPerPage = $limitPerPage;
+        $this->perPage = $perPage;
         $this->categoryId = $categoryId;
         $this->productKeyword = $productKeyword;
         $this->sort = $sort;
@@ -54,6 +54,6 @@ class ProductOutlineQuery
 
     public function offset()
     {
-        return ($this->page - 1) * $this->limitPerPage;
+        return ($this->page - 1) * $this->perPage;
     }
 }

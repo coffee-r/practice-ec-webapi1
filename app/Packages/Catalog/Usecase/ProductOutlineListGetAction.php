@@ -18,7 +18,7 @@ class ProductOutlineListGetAction{
         $this->productOutlineQueryService = $productOutlineQueryService;
     }
 
-    public function __invoke(ProductOutlineQuery $productOutlineQuery) : LengthAwarePaginator
+    public function __invoke(ProductOutlineQuery $productOutlineQuery) : ProductOutlinePagenationData
     {
         $productOutlinePaginationData = $this->productOutlineQueryService->findPagenator($productOutlineQuery);
 

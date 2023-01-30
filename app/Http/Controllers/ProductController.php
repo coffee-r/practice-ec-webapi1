@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProductOutlinePagenationResource;
 use App\Http\Resources\ProductResource;
 use App\Packages\Catalog\Usecase\ProductGetAction;
 use App\Packages\Catalog\Usecase\ProductOutlineListGetAction;
@@ -22,16 +23,14 @@ class ProductController extends Controller
         //
         $productOutlineQuery = new ProductOutlineQuery(
             $request->query('page'),
-            $request->query('limitPerPage'),
+            $request->query('perPage'),
             $request->query('categoryId'),
             $request->query('productKeyword'),
             $request->query('sort')
         );
 
-        $productOutlinePaginator = $productOutlineListGetAction($productOutlineQuery);
-        $productOutlinePaginator->setPath($request->url());
-        $productOutlinePaginator->appends($request->query());
-        return $productOutlinePaginator;
+        $productOutlinePaginationData = $productOutlineListGetAction($productOutlineQuery);
+        return new ProductOutlinePagenationResource($productOutlinePaginationData);
     }
 
     /**

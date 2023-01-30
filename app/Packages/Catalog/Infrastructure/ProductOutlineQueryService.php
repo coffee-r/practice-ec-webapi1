@@ -3,14 +3,16 @@
 namespace App\Packages\Catalog\Infrastructure;
 
 use App\Packages\Catalog\Usecase\ProductOutlineData;
+use App\Packages\Catalog\Usecase\ProductOutlinePagenationData;
 use App\Packages\Catalog\Usecase\ProductOutlineQuery;
 use App\Packages\Catalog\Usecase\ProductOutlineQueryServiceInterface;
+use App\Packages\Shared\Usecase\PagenationData;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 
 class ProductOutlineQueryService implements ProductOutlineQueryServiceInterface
 {
-    public function findPagenator(ProductOutlineQuery $productOutlineQuery) : LengthAwarePaginator | null
+    public function findPagenator(ProductOutlineQuery $productOutlineQuery) : ProductOutlinePagenationData | null
     {
         $productsQuery = DB::table('products');
 
@@ -27,10 +29,6 @@ class ProductOutlineQueryService implements ProductOutlineQueryServiceInterface
         // 合計件数を先に取得
         $total = $productsQuery->count();
 
-        if($total == 0){
-            return null;
-        }
-
         // ソート条件設定
         if ($productOutlineQuery->sort === 'HIGH_PRICE'){
             $productsQuery = $productsQuery->orderByDesc('price_with_tax');
@@ -46,10 +44,14 @@ class ProductOutlineQueryService implements ProductOutlineQueryServiceInterface
         $productsQuery = $productsQuery->offset($productOutlineQuery->offset());
 
         // 取得件数指定
-        $productsQuery = $productsQuery->limit($productOutlineQuery->limitPerPage);
+        $productsQuery = $productsQuery->limit($productOutlineQuery->perPage);
 
         // 商品取得
         $products = $productsQuery->get();
+
+        if(empty($products)){
+            return null;
+        }
 
         $productOutlineDataList = [];
         
@@ -64,6 +66,9 @@ class ProductOutlineQueryService implements ProductOutlineQueryServiceInterface
             );
         }
 
-        return new LengthAwarePaginator($productOutlineDataList, $total, $productOutlineQuery->limitPerPage, $productOutlineQuery->page);
+        $pagenationData = new PagenationData($total, $productOutlineQuery->page, $productOutlineQuery->perPage);
+
+        return new ProductOutlinePagenationData($productOutlineDataList, $pagenationData);
+        
     }
 }

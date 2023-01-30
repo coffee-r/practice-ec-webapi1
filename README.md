@@ -25,16 +25,19 @@ JsonResource::withoutWrapping();は記述しない (LengthAwarePaginatorでペ�
 ### DBの採番処理が絡むところ
 Factoryパターンで実装
 
+### トランザクション
+Usecase層でDB::transaction()を使って妥協する
+
+### ページネーション&ソート
+商品一覧のところを試しに実装
+* Shared/UsecaseにページネーションのDTO(値オブジェクトっぽいけど)を用意
+* 単一集約でも実装はQueryService
+* apiのクエリパラメタは、perPage/page方式
+
+
 ### Usecase層での妥協
 フレームワークに依存した処理はなるべく書かないようにしたいが、
 実装上どうしてもフレームワークの機能を使いたくなる場面があるのでそのときは妥協する。
 
 * トランザクション → DB::transaction()を使用
     * apicallなどが絡んだときに結果整合性を担保する必要が出てくる
-* ページネーション
-    * ページネーションを自前実装するのが面倒すぎる
-    * QueryServiceを実装
-        * ページ分割したデータと、データの総件数を取得
-    * Usecaseでは__invoke()でLengthAwarePaginatorを返却
-    * controllerでページネーションのurlとqueryパラメタを設定
-    * 
