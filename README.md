@@ -9,7 +9,7 @@ https://readouble.com/laravel/9.x/ja/telescope.html
 ### レスポンスデータの加工
 https://readouble.com/laravel/8.x/ja/eloquent-resources.html
 APIリソースを使う
-JsonResource::withoutWrapping();は記述しない (LengthAwarePaginatorでページネーションを使う想定、apiのフォーマットを合わせたい)
+JsonResource::withoutWrapping();は記述しない
 
 ### 例外設計
 * ハンドリングはapp/Exceptions/Handler.phpで集中管理する
